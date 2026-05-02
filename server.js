@@ -1,9 +1,10 @@
+require("dotenv").config();
+console.log("DB URL:", process.env.DATABASE_URL);
 const express = require("express");
 const session = require("express-session");
 const flash = require("connect-flash");
 const bcrypt = require("bcryptjs");
 const { Pool } = require("pg");
-require("dotenv").config();
 
 const app = express();
 
