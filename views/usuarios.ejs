@@ -1,0 +1,60 @@
+<%- include("partials/header") %>
+
+<h1>Gestión de usuarios</h1>
+
+<div class="form-box">
+  <h2>Crear usuario</h2>
+
+  <form action="/usuarios" method="POST">
+    <label>Nombre</label>
+    <input type="text" name="nombre" required>
+
+    <label>Correo</label>
+    <input type="email" name="email" required>
+
+    <label>Contraseña</label>
+    <input type="password" name="password" required>
+
+    <label>Rol</label>
+    <select name="rol">
+      <option value="usuario">Usuario</option>
+      <option value="admin">Administrador</option>
+    </select>
+
+    <button type="submit">Crear usuario</button>
+  </form>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th>Rol</th>
+      <th>Estado</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% usuarios.forEach(u => { %>
+      <tr>
+        <td><%= u.id %></td>
+        <td><%= u.nombre %></td>
+        <td><%= u.email %></td>
+        <td><%= u.rol %></td>
+        <td><%= u.estado ? 'Activo' : 'Inactivo' %></td>
+        <td>
+          <form action="/usuarios/estado/<%= u.id %>" method="POST">
+            <button type="submit">
+              <%= u.estado ? 'Desactivar' : 'Activar' %>
+            </button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include("partials/footer") %>

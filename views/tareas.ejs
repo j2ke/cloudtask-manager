@@ -1,0 +1,92 @@
+<%- include("partials/header") %>
+
+<h1>Gestión de tareas</h1>
+
+<div class="form-box">
+  <h2>Crear nueva tarea</h2>
+
+  <form action="/tareas" method="POST">
+    <label>Título</label>
+    <input type="text" name="titulo" required>
+
+    <label>Descripción</label>
+    <textarea name="descripcion" required></textarea>
+
+    <label>Estado</label>
+    <select name="estado">
+      <option value="pendiente">Pendiente</option>
+      <option value="en proceso">En proceso</option>
+      <option value="finalizada">Finalizada</option>
+    </select>
+
+    <label>Asignar a usuario</label>
+    <select name="usuario_id">
+      <option value="">Sin asignar</option>
+      <% usuarios.forEach(u => { %>
+        <option value="<%= u.id %>"><%= u.nombre %></option>
+      <% }) %>
+    </select>
+
+    <button type="submit">Guardar tarea</button>
+  </form>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Título</th>
+      <th>Descripción</th>
+      <th>Estado</th>
+      <th>Usuario</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% tareas.forEach(tarea => { %>
+      <tr>
+        <form action="/tareas/editar/<%= tarea.id %>" method="POST">
+          <td><%= tarea.id %></td>
+
+          <td>
+            <input type="text" name="titulo" value="<%= tarea.titulo %>">
+          </td>
+
+          <td>
+            <input type="text" name="descripcion" value="<%= tarea.descripcion %>">
+          </td>
+
+          <td>
+            <select name="estado">
+              <option value="pendiente" <%= tarea.estado === 'pendiente' ? 'selected' : '' %>>Pendiente</option>
+              <option value="en proceso" <%= tarea.estado === 'en proceso' ? 'selected' : '' %>>En proceso</option>
+              <option value="finalizada" <%= tarea.estado === 'finalizada' ? 'selected' : '' %>>Finalizada</option>
+            </select>
+          </td>
+
+          <td>
+            <select name="usuario_id">
+              <option value="">Sin asignar</option>
+              <% usuarios.forEach(u => { %>
+                <option value="<%= u.id %>" <%= tarea.usuario_id === u.id ? 'selected' : '' %>>
+                  <%= u.nombre %>
+                </option>
+              <% }) %>
+            </select>
+          </td>
+
+          <td>
+            <button type="submit">Actualizar</button>
+        </form>
+
+            <form action="/tareas/eliminar/<%= tarea.id %>" method="POST" style="display:inline;">
+              <button class="danger" type="submit">Eliminar</button>
+            </form>
+          </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include("partials/footer") %>s
